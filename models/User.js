@@ -1,12 +1,15 @@
 import { Schema, model } from "mongoose";
 import { handleSaveError } from "./hooks.js";
-import { emailRegepxp } from "../constants/constUser.js";
+import { emailRegepxp, namePattern } from "../constants/constUser.js";
 
 const userSchema = new Schema(
   {
     password: {
       type: String,
       required: [true, 'Password is required'],
+    },
+    name: {
+      type: String,
     },
     email: {
       type: String,

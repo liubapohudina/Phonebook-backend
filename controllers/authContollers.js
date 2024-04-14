@@ -9,7 +9,7 @@ import path from "path";
 import fs from "fs/promises";
 import Jimp from "jimp";
 import { nanoid } from "nanoid";
-import { verify } from "crypto";
+
 
 const avatarPath = path.resolve("public", "avatars");
 
@@ -39,6 +39,7 @@ export const fetchRegisterUser = async (req, res, next) => {
        await sendEmail(verifyEmail);
         const responseBody = {
             user: {
+                name: newUser.name,
                 email: newUser.email,
                 avatarURL: avatarURL,
                 subscription: newUser.subscription

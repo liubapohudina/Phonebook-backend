@@ -1,7 +1,8 @@
 import Joi from 'joi';
-import { emailRegepxp } from '../constants/constUser.js';
+import { emailRegepxp, namePattern } from '../constants/constUser.js';
 
 export const usersSignUpSchema = Joi.object({
+    name: Joi.string().required(),
     email: Joi.string().pattern(emailRegepxp).required(),
     password: Joi.string().min(6).required(),
     avatarURL: Joi.string(),
