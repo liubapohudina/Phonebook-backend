@@ -34,7 +34,7 @@ export const fetchRegisterUser = async (req, res, next) => {
         const verifyEmail = {
             to: email,
             subject: "Verify email",
-            html: `<a target="_blank" href="${PROJECT_URL}/api/users/verify/${verificationToken}">Click verify email</a>`
+            html: `<a target="_blank" href="${PROJECT_URL}/verify/${verificationToken}">Click verify email</a>`
         }
        await sendEmail(verifyEmail);
         const responseBody = {
@@ -42,7 +42,7 @@ export const fetchRegisterUser = async (req, res, next) => {
                 name: newUser.name,
                 email: newUser.email,
                 avatarURL: avatarURL,
-                subscription: newUser.subscription
+                subscription: newUser.subscription,
             }
         };
         res.status(201).json(responseBody);
@@ -51,16 +51,20 @@ export const fetchRegisterUser = async (req, res, next) => {
     }
 };
 
-export const fetchUserVerify = async (req, res) => {
-    const { verificationToken } = req.params;
-    const user = await findUser({ verificationToken });
-    if (!user) {
-        throw HttpError(404, "Not found")
+export const fetchUserVerify = async (req, res, next) => {
+    try {
+        const { verificationToken } = req.params;
+        const user = await findUser({ verificationToken });
+        if (!user || user.verify) {
+            throw HttpError(404, "Not found or verification has already been passed")
+        }
+        await updateUser({ _id: user._id }, { verify: true, verificationToken: null })
+        res.status(200).json({
+            message: 'Verification successful'
+        })
+    } catch (error) {
+        next(error)
     }
-    await updateUser({ _id: user._id }, { verify: true, verificationToken: null })
-    res.status(200).json({
-       message : 'Verification successful'
-    })
 }
 
 export const fetchResendVerify = async (req, res, next) => {
@@ -77,7 +81,7 @@ export const fetchResendVerify = async (req, res, next) => {
         const verifyEmail = {
             to: email,
             subject: "Verify email",
-            html: `<a target="_blank" href="${PROJECT_URL}/api/users/verify/${user.verificationToken}">Click verify email</a>`
+            html: `<a target="_blank" href="${PROJECT_URL}/verify/${user.verificationToken}">Click verify email</a>`
         }
         await sendEmail(verifyEmail);
     
