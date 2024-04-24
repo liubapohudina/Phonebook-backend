@@ -14,8 +14,8 @@ import { nanoid } from "nanoid";
 const avatarPath = path.resolve("public", "avatars");
 
 configDotenv()
-
-const { JWT_SECRET, PROJECT_URL } = process.env;
+const PROJECT_URL = 'https://pohudina-phonebook.netlify.app/api';
+const { JWT_SECRET } = process.env;
 
 export const fetchRegisterUser = async (req, res, next) => {
     try {
