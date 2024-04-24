@@ -14,7 +14,7 @@ import { nanoid } from "nanoid";
 const avatarPath = path.resolve("public", "avatars");
 
 configDotenv()
-const PROJECT_URL = 'https://phonebook-frontend-beta.vercel.app//api';
+const PROJECT_URL = 'https://phonebook-frontend-beta.vercel.app/api';
 const { JWT_SECRET } = process.env;
 
 export const fetchRegisterUser = async (req, res, next) => {
