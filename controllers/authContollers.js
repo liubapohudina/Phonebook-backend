@@ -128,6 +128,7 @@ export const fetchLoginUser = async (req, res, next) => {
     const responseBody = {
       token: token,
       user: {
+        name: user.name,
         email: user.email,
         subscription: user.subscription,
       },
