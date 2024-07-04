@@ -140,9 +140,11 @@ export const fetchLoginUser = async (req, res, next) => {
   }
 };
 
+
 export const fetchCurrentUser = async (req, res) => {
-  const { email, subscription } = req.user;
-  res.status(200).json({ email, subscription });
+  console.log(req.user)
+  const { email, subscription, name } = req.user;
+  res.status(200).json({ email, subscription, name });
 };
 
 export const fetchLogoutUser = async (req, res) => {
