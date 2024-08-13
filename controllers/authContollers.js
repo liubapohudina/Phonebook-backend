@@ -181,6 +181,7 @@ export const fetchUpdateUserAvatar = async (req, res) => {
   await updateUser({ _id }, { avatarURL: avatarURL });
   res.status(200).json({ avatarURL: avatarURL });
 };
+
 // for cloudinary
 // export const fetchUpdateUserAvatar = async (req, res) => {
 //   if (!req.file) {
