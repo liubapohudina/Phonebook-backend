@@ -51,6 +51,7 @@ export const fetchRegisterUser = async (req, res, next) => {
         email: newUser.email,
         avatarURL: avatarURL,
         subscription: newUser.subscription,
+        id: newUser._id.toString(),
       },
     };
     res.status(201).json(responseBody);
@@ -131,6 +132,7 @@ export const fetchLoginUser = async (req, res, next) => {
         name: user.name,
         email: user.email,
         subscription: user.subscription,
+        id: user._id.toString()
       },
     };
 
@@ -142,9 +144,8 @@ export const fetchLoginUser = async (req, res, next) => {
 
 
 export const fetchCurrentUser = async (req, res) => {
-  console.log(req.user)
-  const { email, subscription, name } = req.user;
-  res.status(200).json({ email, subscription, name });
+  const { email, subscription, name, avatarURL, _id } = req.user;
+  res.status(200).json({ email, subscription, name, avatarURL, id: _id.toString() });
 };
 
 export const fetchLogoutUser = async (req, res) => {
@@ -180,3 +181,32 @@ export const fetchUpdateUserAvatar = async (req, res) => {
   await updateUser({ _id }, { avatarURL: avatarURL });
   res.status(200).json({ avatarURL: avatarURL });
 };
+// for cloudinary
+// export const fetchUpdateUserAvatar = async (req, res) => {
+//   if (!req.file) {
+//     return res.status(400).json({ error: 'File not found' });
+//   }
+//   const { _id } = req.user;
+//   const { path: oldPath } = req.file;
+
+//   try {
+//     // Завантаження зображення на Cloudinary
+//     const avatarURL = await cloudinary.uploader.upload(oldPath, {
+//       folder: 'avatars',
+//       width: 250,
+//       height: 250,
+//       crop: 'fill',
+//       quality: 'auto',
+//     });
+
+//     // Оновлення інформації про користувача
+//     await updateUser({ _id }, { avatarURL: avatarURL.secure_url });
+
+//     // Видалення локального файлу після завантаження
+//     await fs.unlink(oldPath);
+
+//     res.status(200).json({ avatarURL: avatarURL.secure_url });
+//   } catch (error) {
+//     res.status(500).json({ error: 'Failed to update avatar' });
+//   }
+// };
